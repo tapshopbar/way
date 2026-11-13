@@ -46,7 +46,10 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
 .pin circle{fill:var(--wine);stroke:#fff;stroke-width:1.2}
 .pinlabel{font-weight:800;fill:#fff;paint-order:stroke;stroke:rgba(0,0,0,.55);stroke-width:1.4px}
 .meta{display:flex;gap:6px;flex-wrap:wrap}.meta span{font-size:12px;font-weight:700;background:var(--soft);padding:5px 9px;border-radius:8px}
-.links{display:flex;gap:8px}.links a{flex:1;text-align:center;font-size:13px;font-weight:600;padding:11px 0;border-radius:12px;border:1px solid var(--line);background:#fff}
+.links{display:flex;gap:8px}.links a{flex:1;text-align:center;font-size:14px;font-weight:800;padding:13px 0;border-radius:12px;border:0;background:#fff}
+.links a.naver{background:#03C75A;color:#fff}.links a.kakao{background:#FEE500;color:#191919}.links a.book{background:#F43131;color:#fff}
+.arrshare{width:100%;height:54px;border-radius:14px;background:var(--blue);color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;cursor:pointer}
+.arrshare svg{width:20px;height:20px;flex:none}
 .addr{font-size:13px;color:#55504c;line-height:1.6}.addr b{color:var(--ink)}
 .draft{font-size:11px;color:#a59f99;line-height:1.5}
 
@@ -58,7 +61,7 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
   .mtop{position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top));display:flex;gap:8px;align-items:center;z-index:5}
   .pill{background:#fff;border-radius:999px;box-shadow:0 4px 18px rgba(0,0,0,.14);height:44px;display:flex;align-items:center;gap:9px;padding:0 16px;font-size:14px;font-weight:700}
   .mtop .grow{flex:1;min-width:0}.mtop .grow span.t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .sharebtn{background:#fff;border-radius:999px;box-shadow:0 4px 18px rgba(0,0,0,.14);height:44px;padding:0 14px;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:800;color:var(--wine)}
+  .sharebtn{background:#fff;border-radius:999px;box-shadow:0 4px 18px rgba(0,0,0,.14);height:44px;padding:0 14px;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:800;color:var(--blue)}
   .sharebtn svg{width:18px;height:18px}
   .eta{position:fixed;right:12px;top:calc(62px + env(safe-area-inset-top));z-index:5;background:var(--ink);color:#fff;border-radius:12px;padding:8px 12px;font-size:13px;font-weight:800;box-shadow:0 4px 14px rgba(0,0,0,.18)}
   .eta small{font-weight:600;opacity:.7;margin-left:4px}
@@ -86,13 +89,17 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
   .more .links{margin-bottom:14px}.more .addr{margin-bottom:12px}
   .bigshare{width:100%;height:52px;border-radius:14px;background:var(--wine);color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px}
   .bigshare svg{width:20px;height:20px;flex:none}
+  .scrollhint{position:fixed;left:50%;bottom:calc(var(--padB) - 6px);transform:translateX(-50%);z-index:12;background:rgba(14,14,14,.82);color:#fff;font-size:13px;font-weight:700;padding:9px 14px;border-radius:999px;pointer-events:none;transition:opacity .4s;white-space:nowrap}
+  .scrollhint span{display:inline-block;animation:bob 1.2s infinite}
+  .scrollhint.off{opacity:0}
+  @keyframes bob{0%,100%{transform:translateY(-1px)}50%{transform:translateY(3px)}}
   .toast{position:fixed;left:50%;top:calc(120px + env(safe-area-inset-top));transform:translate(-50%,-10px);background:rgba(14,14,14,.9);color:#fff;font-size:14px;font-weight:700;padding:12px 16px;border-radius:12px;z-index:30;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
   .toast.show{opacity:1;transform:translate(-50%,0)}
 }
 /* ================= DESKTOP ================= */
 @media (min-width:960px){
   body{background:var(--soft)}
-  .mtop,.eta,.sheet,.hint{display:none!important}
+  .mtop,.eta,.sheet,.hint,.scrollhint{display:none!important}
   .page{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:440px 1fr;gap:36px;padding:32px 32px 60px}
   .left{position:sticky;top:24px;align-self:start}
   .card{background:#fff;border-radius:24px;box-shadow:0 10px 30px rgba(20,27,51,.06);overflow:hidden}
@@ -147,7 +154,7 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
         <circle id="pulse" class="pulse" cx="0" cy="0" r="12"/><circle id="me" class="me" cx="0" cy="0" r="7"/>
       </svg>
     </div>
-    <div class="lefttail"><div class="links"><a href="https://m.place.naver.com/restaurant/1784099751/home" target="_blank" rel="noopener">네이버지도</a><a href="https://place.map.kakao.com/623463532" target="_blank" rel="noopener">카카오맵</a><a href="https://m.booking.naver.com/booking/6/bizes/1125285" target="_blank" rel="noopener">예약</a></div><div class="addr"><b>탭샵바 동대문두타점</b><br>서울 중구 장충단로 275, 두타몰 지하 2층 117호<br>푸드코트 방향 · 지하주차장 2시간 무료</div><p class="draft">길 사진: 카카오맵 로드뷰(2026.07). 두타몰 안 사진은 곧 추가돼요.</p></div>
+    <div class="lefttail"><div class="links"><a class="naver" href="https://m.place.naver.com/restaurant/1784099751/home" target="_blank" rel="noopener">네이버지도</a><a class="kakao" href="https://place.map.kakao.com/623463532" target="_blank" rel="noopener">카카오맵</a><a class="book" href="https://m.booking.naver.com/booking/6/bizes/1125285" target="_blank" rel="noopener">예약하기</a></div><div class="addr"><b>탭샵바 동대문두타점</b><br>서울 중구 장충단로 275, 두타몰 지하 2층 117호<br>푸드코트 방향 · 지하주차장 2시간 무료</div><p class="draft">길 사진: 카카오맵 로드뷰(2026.07). 두타몰 안 사진은 곧 추가돼요.</p></div>
   </div></div>
   <div class="list" id="list"><h2 class="h">STEP BY STEP</h2></div>
 </div>
@@ -159,18 +166,17 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
 </div>
 <div class="eta">🚶 5분<small>200m</small></div>
 <div class="toast" id="toast"></div>
+<div class="scrollhint" id="hint">아래로 내려 보세요 <span>↓</span></div>
 <div class="sheet" id="sheet">
   <div class="shead" id="shead">
     <div class="grab"></div>
     <div class="row"><span class="stepno" id="stepno"></span><span class="route" id="routeTxt"></span></div>
     <div class="progress" id="prog"></div>
-    <div class="nav"><button class="btn ghost" id="prev">이전</button><button class="btn main" id="next">다음</button></div>
   </div>
   <div class="sbody" id="sbody">
     <div id="steps"></div>
     <div class="more">
-      <button class="bigshare" id="share2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>이 길 안내 공유하기</button>
-      <div class="links"><a href="https://m.place.naver.com/restaurant/1784099751/home" target="_blank" rel="noopener">네이버지도</a><a href="https://place.map.kakao.com/623463532" target="_blank" rel="noopener">카카오맵</a><a href="https://m.booking.naver.com/booking/6/bizes/1125285" target="_blank" rel="noopener">예약</a></div>
+      <div class="links"><a class="naver" href="https://m.place.naver.com/restaurant/1784099751/home" target="_blank" rel="noopener">네이버지도</a><a class="kakao" href="https://place.map.kakao.com/623463532" target="_blank" rel="noopener">카카오맵</a><a class="book" href="https://m.booking.naver.com/booking/6/bizes/1125285" target="_blank" rel="noopener">예약하기</a></div>
       <div class="addr"><b>탭샵바 동대문두타점</b><br>서울 중구 장충단로 275, 두타몰 지하 2층 117호<br>푸드코트 방향 · 지하주차장 2시간 무료</div>
       <p class="draft">길 사진: 카카오맵 로드뷰(2026.07). 두타몰 안 사진은 곧 추가돼요.</p>
     </div>
@@ -232,6 +238,8 @@ function photoHTML(s){
   return `<div class="photo">${IMG[s.img]?`<img src="${IMG[s.img]}" alt="${s.tag}" loading="lazy">`:`<div class="ph">📷<b>직원 촬영 예정</b><span>${s.shot||''}</span></div>`}
     <svg viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice">${s.ov||''}</svg>
     <span class="tag">${s.tag}</span>${IMG[s.img]?`<span class="credit">${credit}</span>`:''}</div>`; }
+const SHARE_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>';
+const shareBtn = ()=>`<button class="arrshare">${SHARE_SVG}이 길 안내 공유하기</button>`;
 const metaHTML = s=>`<div class="meta">${s.meta.map(m=>`<span>${m}</span>`).join('')}</div>`;
 
 /* ---------- mobile: Uber-style sheet (vertical steps) ---------- */
@@ -241,7 +249,7 @@ const padB = (iOS ? (inApp?110:80) : (inApp?60:28));
 document.documentElement.style.setProperty('--padB', `calc(${padB}px + env(safe-area-inset-bottom))`);
 $('#routeTxt').textContent = SUB.split('에서')[0];
 $('#prog').innerHTML = STEPS.map(()=>'<i></i>').join('');
-$('#steps').innerHTML = STEPS.map((s,i)=>`<div class="scard" data-i="${i}"><div class="hd"><span class="num">${s.arrive?'✓':i+1}</span><h2>${s.title}</h2></div>${photoHTML(s)}<p>${s.text}</p>${metaHTML(s)}</div>`).join('');
+$('#steps').innerHTML = STEPS.map((s,i)=>`<div class="scard" data-i="${i}"><div class="hd"><span class="num">${s.arrive?'✓':i+1}</span><h2>${s.title}</h2></div>${photoHTML(s)}<p>${s.text}</p>${metaHTML(s)}${s.arrive?shareBtn():''}</div>`).join('');
 const cards=[...document.querySelectorAll('.scard')];
 function setStep(i){
   if (i===cur && cards[i].classList.contains('on')) return;
@@ -249,18 +257,12 @@ function setStep(i){
   $('#stepno').textContent = `STEP ${i+1} / ${STEPS.length}`;
   document.querySelectorAll('#prog i').forEach((el,k)=>el.classList.toggle('on',k<=i));
   cards.forEach((el,k)=>el.classList.toggle('on',k===i));
-  $('#prev').disabled = i===0;
-  const s=STEPS[i], nx=$('#next');
-  if (s.arrive){ nx.textContent='예약하기'; nx.className='btn wine'; }
-  else { nx.textContent = i===STEPS.length-2 ? '도착 ↓' : '다음 ↓'; nx.className='btn main'; }
   setMap(i);
 }
 let lock=0;
 function goTo(i){ i=Math.max(0,Math.min(STEPS.length-1,i)); lock=Date.now(); setStep(i); sbody.scrollTo({top:cards[i].offsetTop, behavior:'smooth'}); }
-$('#prev').onclick=()=>goTo(cur-1);
-$('#next').onclick=()=>{ if (STEPS[cur].arrive) open(BOOK,'_blank'); else goTo(cur+1); };
 /* active step = card nearest the top of the sheet body */
-sbody.addEventListener('scroll',()=>{ if (Date.now()-lock<700) return;
+sbody.addEventListener('scroll',()=>{ if (sbody.scrollTop>10) $('#hint').classList.add('off'); if (Date.now()-lock<700) return;
   const y=sbody.scrollTop+40; let best=0; cards.forEach((c,k)=>{ if (c.offsetTop<=y) best=k; });
   if (sbody.scrollTop+sbody.clientHeight>=sbody.scrollHeight-4 && best<STEPS.length-1 && cards[STEPS.length-1].offsetTop < sbody.scrollTop+sbody.clientHeight*0.5) best=STEPS.length-1;
   if (best!==cur) setStep(best);
@@ -274,7 +276,7 @@ async function share(){ const d=shareData();
   const txt=`${d.text}\n${d.url}`;
   try{ await navigator.clipboard.writeText(txt); }catch(e){ const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
   toast('링크를 복사했어요. 카톡에 붙여넣기 하세요'); }
-['#share1','#share2'].forEach(id=>$(id).onclick=share);
+$('#share1').onclick=share; document.querySelectorAll('.arrshare').forEach(b=>b.onclick=share);
 
 /* detents */
 const vh=()=>window.innerHeight, fullH=()=>sheet.getBoundingClientRect().height;
@@ -310,12 +312,13 @@ $('#shead').addEventListener('pointerup',e=>{ if(!drag) return; const dy=e.clien
 const list=$('#list');
 STEPS.forEach((s,i)=>list.insertAdjacentHTML('beforeend',`<div class="item ${s.arrive?'arrive':''}" data-i="${i}">${photoHTML(s)}
   <div class="txt"><div class="num">${s.arrive?'✓':i+1}</div><h3>${s.title}</h3><p>${s.text}</p>${metaHTML(s)}
-  ${s.arrive?`<div class="arrivecta"><a href="${BOOK}" target="_blank">예약하기</a></div>`:''}</div></div>`));
+  ${s.arrive?shareBtn():''}</div></div>`));
 const items=[...document.querySelectorAll('.item')];
 function activate(i){ items.forEach(el=>el.classList.toggle('on',+el.dataset.i===i)); setMap(i); }
 const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting&&isPC()) activate(+e.target.dataset.i); }),{rootMargin:'-45% 0px -45% 0px'});
 items.forEach(el=>{ io.observe(el); el.onclick=()=>activate(+el.dataset.i); });
 
+document.querySelectorAll('.arrshare').forEach(b=>b.onclick=share);
 /* ---------- start ---------- */
 function start(){
   if (isPC()){ vb=frameAll(); $('#map').setAttribute('viewBox',vb.join(' ')); activate(0); return; }
