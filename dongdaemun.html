@@ -224,6 +224,8 @@ MAP.querySelectorAll('text').forEach(el=>{
   const fs=parseFloat(el.style.fontSize||'0'); el.style.fontSize='';
   el.classList.add(fs && fs<=8.6 ? 'sm' : 'lm');
 });
+/* labels above roads, below the route line */
+MAP.querySelectorAll('text.lm,text.sm,text.roadname').forEach(el=>{ if(!el.closest('#pin')) MAP.insertBefore(el, $('#segs')); });
 function applyScale(){
   const r=MAP.getBoundingClientRect(); if(!r.width) return;
   const k=Math.max(vb[2]/r.width, vb[3]/r.height);

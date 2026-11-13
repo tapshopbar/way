@@ -147,7 +147,7 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
         <text class="blockname" x="282" y="152" style="font-size:8.5px">카페 공명</text>
         <text class="blockname" x="190" y="280">상가 블록</text>
 
-        <text class="blockname" x="232" y="18" text-anchor="end">VL르웨스트</text>
+        <text class="blockname" x="112" y="34">VL르웨스트</text>
         <rect x="252" y="58" width="22" height="16" rx="3" fill="#fff" stroke="#d4cdc6"/>
         <text class="blockname" x="250" y="52" text-anchor="end" style="font-size:8.5px">세븐일레븐</text>
 
@@ -161,7 +161,7 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
         <!-- line 5 -->
         <rect x="-600" y="453" width="1600" height="6" fill="#8B50A4" opacity=".35"/>
         <rect x="150" y="452" width="120" height="10" rx="5" fill="#8B50A4" opacity=".9"/>
-        <text x="210" y="482" text-anchor="middle" style="font-size:9px;font-weight:700;fill:#8B50A4">5호선 마곡역</text>
+        <text x="236" y="496" text-anchor="middle" style="font-size:9px;font-weight:700;fill:#8B50A4">5호선 마곡역</text>
         <!-- crosswalk -->
         <g fill="#fff" stroke="#D8D2CC" stroke-width=".6"><rect x="80" y="88" width="24" height="5"/><rect x="80" y="97" width="24" height="5"/><rect x="80" y="106" width="24" height="5"/><rect x="80" y="115" width="24" height="5"/><rect x="80" y="124" width="24" height="5"/></g>
         
@@ -242,6 +242,8 @@ MAP.querySelectorAll('text').forEach(el=>{
   const fs=parseFloat(el.style.fontSize||'0'); el.style.fontSize='';
   el.classList.add(fs && fs<=8.6 ? 'sm' : 'lm');
 });
+/* labels above roads, below the route line */
+MAP.querySelectorAll('text.lm,text.sm,text.roadname').forEach(el=>{ if(!el.closest('#pin')) MAP.insertBefore(el, $('#segs')); });
 function applyScale(){
   const r=MAP.getBoundingClientRect(); if(!r.width) return;
   const k=Math.max(vb[2]/r.width, vb[3]/r.height);
