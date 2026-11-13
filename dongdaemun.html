@@ -62,7 +62,7 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
 .draft{font-size:11px;color:#a59f99;line-height:1.5}
 
 /* ================= MOBILE (Uber-style) ================= */
-@media (max-width:959px){
+@media (max-width:959px), (min-width:960px) and (max-width:1199px) and (pointer:coarse){
   body{overflow:hidden;height:100dvh}
   .page .card>.top,.page .card>.title,.page .card>.routes,.lefttail,.list{display:none!important}
   .mapwrap{position:fixed;left:0;right:0;top:0;height:var(--mapH);transition:height .45s cubic-bezier(.2,.8,.2,1)}
@@ -104,8 +104,19 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
   .toast{position:fixed;left:50%;top:calc(120px + env(safe-area-inset-top));transform:translate(-50%,-10px);background:rgba(14,14,14,.9);color:#fff;font-size:14px;font-weight:700;padding:12px 16px;border-radius:12px;z-index:30;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
   .toast.show{opacity:1;transform:translate(-50%,0)}
 }
+/* ================= FOLDABLE / TABLET: map left, steps right (Galaxy Z Fold8 main screen) ================= */
+@media (min-width:700px) and (max-width:959px), (min-width:700px) and (max-width:1199px) and (pointer:coarse){
+  .mapwrap{left:0;right:auto;top:0;width:50vw;height:100dvh!important;transition:none}
+  .mtop{right:auto;width:calc(50vw - 24px)}
+  .eta{right:auto;left:calc(50vw - 12px);transform:translateX(-100%)}
+  .sheet{left:50vw;right:0;top:0;bottom:0;height:100dvh;transform:none!important;border-radius:0;box-shadow:none;border-left:1px solid var(--line)}
+  .shead{cursor:default;touch-action:auto;padding-top:16px}.grab{display:none}
+  .scard{padding:18px 22px 20px}
+  .scrollhint{left:75vw}
+  .toast{left:75vw}
+}
 /* ================= DESKTOP ================= */
-@media (min-width:960px){
+@media (min-width:960px) and (pointer:fine), (min-width:1200px){
   body{background:var(--soft)}
   .mtop,.eta,.sheet,.hint,.scrollhint{display:none!important}
   .page{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:440px 1fr;gap:36px;padding:32px 32px 60px}
@@ -209,7 +220,8 @@ const STEPS = [
    shot:'B2 에스컬레이터에서 내리자마자 본 모습 · 노란 매장 입구 정면'}
 ];
 const $ = s=>document.querySelector(s);
-const isPC = ()=>matchMedia('(min-width:960px)').matches;
+const isPC = ()=>matchMedia('(min-width:960px) and (pointer:fine), (min-width:1200px)').matches;
+const isSplit = ()=>!isPC() && matchMedia('(min-width:700px) and (max-width:959px), (min-width:700px) and (max-width:1199px) and (pointer:coarse)').matches;
 let cur = 0;
 
 /* ---------- map ---------- */
@@ -242,7 +254,7 @@ function camTo(t,ms=600){ cancelAnimationFrame(anim);
 function frameAll(){ const r=$('.mapwrap').getBoundingClientRect(), ar=r.width/Math.max(1,r.height); const h=FULL[2], w=Math.max(h*.8,h*ar); return [FULL[0]-w/2,FULL[1]-h/2,w,h*Math.max(1,(w/ar)/h)]; }
 function frame(i){
   if (isPC()) return frameAll();
-  const r=$('.mapwrap').getBoundingClientRect(), mh=Math.max(1,(mapTargetH||r.height));
+  const r=$('.mapwrap').getBoundingClientRect(), mh=Math.max(1,(isSplit()? r.height : (mapTargetH||r.height)));
   const topUI=Math.min(0.45, 112/mh), ar=r.width/(mh*(1-topUI));
   const pts=[]; STEPS.slice(i).forEach(s=>{ if(s.seg) s.seg.forEach(k=>pts.push(P[k])); }); pts.push(P.S);
   if (!STEPS[i].seg){ const last=[...STEPS].reverse().find(x=>x.seg).seg; pts.push(P[last[0]]); }
@@ -290,7 +302,7 @@ let lock=0;
 function goTo(i){ i=Math.max(0,Math.min(STEPS.length-1,i)); lock=Date.now(); setStep(i); sbody.scrollTo({top:cards[i].offsetTop, behavior:'smooth'}); }
 /* active step = card nearest the top of the sheet body */
 sbody.addEventListener('scroll',()=>{ if (sbody.scrollTop>10) $('#hint').classList.add('off'); if (Date.now()-lock<700) return;
-  const visH=Math.max(120, curVis-$('#shead').offsetHeight);
+  const visH= isSplit() ? sbody.clientHeight : Math.max(120, curVis-$('#shead').offsetHeight);
   const y=sbody.scrollTop+visH*0.4; let best=0; cards.forEach((c,k)=>{ if (c.offsetTop<=y) best=k; });
   if (sbody.scrollTop >= sbody.scrollHeight-sbody.clientHeight-6) best=STEPS.length-1;
   if (best!==cur) setStep(best);
@@ -317,6 +329,7 @@ let curDetent='half', curVis=0;
 function setVis(v, animate){ curVis=v; sheet.classList.toggle('anim',!!animate); sheet.style.transform=`translateY(${fullH()-v}px)`; document.documentElement.style.setProperty('--hiddenB', Math.max(0,fullH()-v)+'px'); }
 let mapTargetH=null;
 function snap(name, animate=true){
+  if (isSplit()){ document.documentElement.style.setProperty('--hiddenB','0px'); camTo(frame(cur),650); return; }
   curDetent=name; const v=visibleFor(name); setVis(v, animate);
   const mapH = Math.max(170, vh()-v+22);
   mapTargetH=mapH; document.documentElement.style.setProperty('--mapH', mapH+'px');
@@ -324,7 +337,7 @@ function snap(name, animate=true){
 }
 /* drag the header */
 let drag=null;
-$('#shead').addEventListener('pointerdown',e=>{ if (e.target.closest('button')) return; drag={y0:e.clientY, v0:curVis, t0:performance.now()}; $('#shead').setPointerCapture(e.pointerId); sheet.classList.remove('anim'); });
+$('#shead').addEventListener('pointerdown',e=>{ if (isSplit() || e.target.closest('button')) return; drag={y0:e.clientY, v0:curVis, t0:performance.now()}; $('#shead').setPointerCapture(e.pointerId); sheet.classList.remove('anim'); });
 $('#shead').addEventListener('pointermove',e=>{ if(!drag) return; const v=Math.max(80, Math.min(fullH(), drag.v0-(e.clientY-drag.y0))); setVis(v,false); });
 $('#shead').addEventListener('pointerup',e=>{ if(!drag) return; const dy=e.clientY-drag.y0, vel=dy/(performance.now()-drag.t0);
   const opts=['peek','half','full'].map(n=>[n,visibleFor(n)]); let target;
@@ -348,6 +361,7 @@ document.querySelectorAll('.arrshare').forEach(b=>b.onclick=share);
 /* ---------- start ---------- */
 function start(){
   if (isPC()){ setVB(frameAll()); activate(0); return; }
+  if (isSplit()){ document.documentElement.style.setProperty('--hiddenB','0px'); setVB(frameAll()); setStep(0); return; }
   document.documentElement.style.setProperty('--mapH', '100dvh');
   setVB(frameAll());
   setStep(0);
