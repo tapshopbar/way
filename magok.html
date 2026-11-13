@@ -25,6 +25,14 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
 .mapwrap{position:relative;overflow:hidden;background:#E3DED9}
 .mapwrap svg{width:100%;height:100%;display:block}
 .road{fill:#fff}.roadname{font-size:9px;fill:#9a948f;font-weight:600}.blockname{font-size:9.5px;fill:#7d7670;font-weight:600}
+#map{--k:1}
+#map text.lm{font-size:calc(14.5px * var(--k));font-weight:800;fill:#57504a;paint-order:stroke;stroke:#E3DED9;stroke-width:calc(3px * var(--k))}
+#map text.sm{font-size:calc(11.5px * var(--k));font-weight:700;fill:#857d76;paint-order:stroke;stroke:#E3DED9;stroke-width:calc(2.5px * var(--k))}
+#map .roadname{font-size:calc(11.5px * var(--k));font-weight:700;fill:#9a948f}
+#map .nodetxt{font-size:calc(10px * var(--k))}
+#map .node{r:calc(9px * var(--k));stroke-width:calc(2px * var(--k))}
+#map .seg{stroke-width:calc(5px * var(--k))}#map .seg.active{stroke-width:calc(6.5px * var(--k))}
+#map .me{stroke-width:calc(3px * var(--k))}
 .seg{fill:none;stroke:#B9B1AA;stroke-width:5;stroke-linecap:round;stroke-dasharray:1 9}
 .seg.done{stroke:var(--wine2);stroke-dasharray:none;opacity:.35}.seg.active{stroke:var(--wine);stroke-dasharray:none;stroke-width:6}
 .node{fill:#fff;stroke:#B9B1AA;stroke-width:2}.node.done{stroke:var(--wine2)}
@@ -135,30 +143,30 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
 <rect x="-600" y="-600" width="1600" height="1800" fill="#E3DED9"/>
         <!-- blocks -->
 
-        <text class="blockname" x="14" y="270">강서구청</text>
+        <text class="blockname" x="68" y="270" text-anchor="end">강서구청</text>
         <text class="blockname" x="282" y="152" style="font-size:8.5px">카페 공명</text>
         <text class="blockname" x="190" y="280">상가 블록</text>
 
-        <text class="blockname" x="122" y="28">VL르웨스트</text>
+        <text class="blockname" x="232" y="18" text-anchor="end">VL르웨스트</text>
         <rect x="252" y="58" width="22" height="16" rx="3" fill="#fff" stroke="#d4cdc6"/>
-        <text class="blockname" x="226" y="52" style="font-size:8.5px">세븐일레븐</text><text class="blockname" x="132" y="64" style="font-size:8.5px">A동</text><text class="blockname" x="196" y="64" style="font-size:8.5px">B동</text>
+        <text class="blockname" x="250" y="52" text-anchor="end" style="font-size:8.5px">세븐일레븐</text>
 
         <!-- roads -->
         <rect class="road" x="-600" y="86" width="1600" height="44"/>
-        <text class="roadname" x="200" y="112">마곡중앙3로</text>
+        <text class="roadname" x="300" y="116">마곡중앙3로</text>
         <rect class="road" x="78" y="-600" width="28" height="1100"/>
-        <text class="roadname" x="96" y="330" transform="rotate(-90 96 330)">마곡서로</text>
+        
         <rect x="-600" y="430" width="1600" height="400" fill="#FBF1D2"/>
-        <text class="roadname" x="250" y="500">공항대로</text>
+        <text class="roadname" x="330" y="526">공항대로</text>
         <!-- line 5 -->
         <rect x="-600" y="453" width="1600" height="6" fill="#8B50A4" opacity=".35"/>
         <rect x="150" y="452" width="120" height="10" rx="5" fill="#8B50A4" opacity=".9"/>
-        <text x="210" y="476" text-anchor="middle" style="font-size:9px;font-weight:700;fill:#8B50A4">5호선 마곡역</text>
+        <text x="210" y="482" text-anchor="middle" style="font-size:9px;font-weight:700;fill:#8B50A4">5호선 마곡역</text>
         <!-- crosswalk -->
         <g fill="#fff" stroke="#D8D2CC" stroke-width=".6"><rect x="80" y="88" width="24" height="5"/><rect x="80" y="97" width="24" height="5"/><rect x="80" y="106" width="24" height="5"/><rect x="80" y="115" width="24" height="5"/><rect x="80" y="124" width="24" height="5"/></g>
         
         <g id="segs"></g><g id="nodes"></g>
-        <g transform="translate(286,76)">
+        <g id="pin" transform="translate(286,76)">
           <path d="M0 0c-11 0-19 8-19 18 0 13 19 30 19 30s19-17 19-30C19 8 11 0 0 0z" fill="var(--wine)" stroke="#fff" stroke-width="3" transform="translate(0,-48)"/>
           <text x="0" y="-27" text-anchor="middle" style="font-size:10px;font-weight:800;fill:#fff">TSB</text>
         </g>
@@ -227,10 +235,25 @@ STEPS.forEach((s,i)=>{ if(!s.seg) return; const [a,b]=s.seg.map(k=>P[k]);
   $('#segs').insertAdjacentHTML('beforeend',`<path class="seg" data-i="${i}" d="M${a[0]} ${a[1]} L${b[0]} ${b[1]}"/>`);
   $('#nodes').insertAdjacentHTML('beforeend',`<circle class="node" data-i="${i}" cx="${a[0]}" cy="${a[1]}" r="8"/><text class="nodetxt" x="${a[0]}" y="${a[1]}">${i+1}</text>`); });
 let vb=[-40,-20,440,540], anim;
+const MAP=$('#map'), PINXY="286,76";
+/* labels: big landmarks vs small, keep the same on-screen size at any zoom */
+MAP.querySelectorAll('text').forEach(el=>{
+  if (el.classList.contains('nodetxt') || el.closest('#pin') || el.classList.contains('roadname')) return;
+  const fs=parseFloat(el.style.fontSize||'0'); el.style.fontSize='';
+  el.classList.add(fs && fs<=8.6 ? 'sm' : 'lm');
+});
+function applyScale(){
+  const r=MAP.getBoundingClientRect(); if(!r.width) return;
+  const k=Math.max(vb[2]/r.width, vb[3]/r.height);
+  MAP.style.setProperty('--k', k);
+  $('#pin').setAttribute('transform', `translate(${PINXY}) scale(${Math.max(.7,k*.85)})`);
+  $('#me').setAttribute('r', 7*k); $('#pulse').setAttribute('r', 12*k);
+}
+function setVB(v){ vb=v; MAP.setAttribute('viewBox', vb.join(' ')); applyScale(); }
 function camTo(t,ms=600){ cancelAnimationFrame(anim);
-  if (document.hidden){ vb=t; $('#map').setAttribute('viewBox',vb.join(' ')); return; }
+  if (document.hidden){ setVB(t); return; }
   const f=[...vb], t0=performance.now();
-  const tick=now=>{ const k=Math.min(1,(now-t0)/ms), e=1-Math.pow(1-k,3); vb=f.map((v,j)=>v+(t[j]-v)*e); $('#map').setAttribute('viewBox',vb.join(' ')); if(k<1) anim=requestAnimationFrame(tick); };
+  const tick=now=>{ const k=Math.min(1,(now-t0)/ms), e=1-Math.pow(1-k,3); setVB(f.map((v,j)=>v+(t[j]-v)*e)); if(k<1) anim=requestAnimationFrame(tick); };
   anim=requestAnimationFrame(tick); }
 function frameAll(){ const r=$('.mapwrap').getBoundingClientRect(), ar=r.width/Math.max(1,r.height); const h=FULL[2], w=Math.max(h*.8,h*ar); return [FULL[0]-w/2,FULL[1]-h/2,w,h*Math.max(1,(w/ar)/h)]; }
 function frame(i){
@@ -340,9 +363,9 @@ items.forEach(el=>{ io.observe(el); el.onclick=()=>activate(+el.dataset.i); });
 document.querySelectorAll('.arrshare').forEach(b=>b.onclick=share);
 /* ---------- start ---------- */
 function start(){
-  if (isPC()){ vb=frameAll(); $('#map').setAttribute('viewBox',vb.join(' ')); activate(0); return; }
+  if (isPC()){ setVB(frameAll()); activate(0); return; }
   document.documentElement.style.setProperty('--mapH', '100dvh');
-  vb=frameAll(); $('#map').setAttribute('viewBox',vb.join(' '));
+  setVB(frameAll());
   setStep(0);
   setVis(0,false); sheet.getBoundingClientRect();
   setTimeout(()=>snap('half'), 350);   // slide up from the bottom
