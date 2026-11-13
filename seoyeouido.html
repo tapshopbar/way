@@ -77,7 +77,7 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
   .nav{display:flex;gap:8px;margin-top:10px}
   .btn{height:48px;border-radius:14px;font-weight:800;font-size:16px;display:grid;place-items:center}
   .btn.ghost{flex:0 0 76px;background:var(--soft)}.btn.main{flex:1;background:var(--ink);color:#fff}.btn.wine{flex:1;background:var(--wine);color:#fff}.btn:disabled{opacity:.35}
-  .sbody{flex:1;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scroll-snap-type:y proximity;padding-bottom:var(--padB)}
+  .sbody{flex:1;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scroll-snap-type:y proximity;padding-bottom:calc(var(--padB) + var(--hiddenB,0px))}
   .scard{padding:16px 18px 18px;border-bottom:8px solid var(--soft);scroll-snap-align:start;scroll-margin-top:0;transition:background .3s}
   .scard .hd{display:flex;gap:10px;align-items:center;margin-bottom:10px}
   .scard .num{flex:none;width:30px;height:30px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-size:13px;font-weight:800;transition:all .3s}
@@ -218,14 +218,16 @@ function camTo(t,ms=600){ cancelAnimationFrame(anim);
 function frameAll(){ const r=$('.mapwrap').getBoundingClientRect(), ar=r.width/Math.max(1,r.height); const h=FULL[2], w=Math.max(h*.8,h*ar); return [FULL[0]-w/2,FULL[1]-h/2,w,h*Math.max(1,(w/ar)/h)]; }
 function frame(i){
   if (isPC()) return frameAll();
-  const r=$('.mapwrap').getBoundingClientRect(), ar=r.width/Math.max(1,(mapTargetH||r.height));
-  const s=STEPS[i], last=[...STEPS].reverse().find(x=>x.seg).seg;
-  const pts = s.seg ? s.seg.map(k=>P[k]) : [P[last[0]],P.S];
+  const r=$('.mapwrap').getBoundingClientRect(), mh=Math.max(1,(mapTargetH||r.height));
+  const topUI=Math.min(0.45, 112/mh), ar=r.width/(mh*(1-topUI));
+  const pts=[]; STEPS.slice(i).forEach(s=>{ if(s.seg) s.seg.forEach(k=>pts.push(P[k])); }); pts.push(P.S);
+  if (!STEPS[i].seg){ const last=[...STEPS].reverse().find(x=>x.seg).seg; pts.push(P[last[0]]); }
   const xs=pts.map(p=>p[0]), ys=pts.map(p=>p[1]);
-  let w=Math.max(...xs)-Math.min(...xs)+150, h=Math.max(...ys)-Math.min(...ys)+170;
+  let w=Math.max(220, Math.max(...xs)-Math.min(...xs)+120), h=Math.max(200, Math.max(...ys)-Math.min(...ys)+190);
   if (w/h<ar) w=h*ar; else h=w/ar;
-  const cx=(Math.max(...xs)+Math.min(...xs))/2, cy=(Math.max(...ys)+Math.min(...ys))/2+12;
-  return [cx-w/2, cy-h/2, w, h]; }
+  const cx=(Math.max(...xs)+Math.min(...xs))/2, cy=(Math.max(...ys)+Math.min(...ys))/2+18;
+  const H=h/(1-topUI), top=cy-h/2-H*topUI;
+  return [cx-w/2, top, w, H]; }
 function setMap(i){
   camTo(frame(i));
   document.querySelectorAll('.seg').forEach(el=>{const k=+el.dataset.i; el.classList.toggle('active',k===i); el.classList.toggle('done',k<i);});
@@ -264,10 +266,10 @@ let lock=0;
 function goTo(i){ i=Math.max(0,Math.min(STEPS.length-1,i)); lock=Date.now(); setStep(i); sbody.scrollTo({top:cards[i].offsetTop, behavior:'smooth'}); }
 /* active step = card nearest the top of the sheet body */
 sbody.addEventListener('scroll',()=>{ if (sbody.scrollTop>10) $('#hint').classList.add('off'); if (Date.now()-lock<700) return;
-  const y=sbody.scrollTop+40; let best=0; cards.forEach((c,k)=>{ if (c.offsetTop<=y) best=k; });
-  if (sbody.scrollTop+sbody.clientHeight>=sbody.scrollHeight-4 && best<STEPS.length-1 && cards[STEPS.length-1].offsetTop < sbody.scrollTop+sbody.clientHeight*0.5) best=STEPS.length-1;
+  const visH=Math.max(120, curVis-$('#shead').offsetHeight);
+  const y=sbody.scrollTop+visH*0.4; let best=0; cards.forEach((c,k)=>{ if (c.offsetTop<=y) best=k; });
+  if (sbody.scrollTop >= sbody.scrollHeight-sbody.clientHeight-6) best=STEPS.length-1;
   if (best!==cur) setStep(best);
-  if (curDetent==='half' && sbody.scrollTop>24) snap('full');
 },{passive:true});
 /* share */
 const shareData=()=>({title:`탭샵바 ${BRANCH} 오시는 길`, text:`탭샵바 ${BRANCH} 오시는 길 (${SUB})`, url:location.href.split('#')[0]});
@@ -285,11 +287,10 @@ function visibleFor(name){
   const H=fullH();
   if (name==='full') return H;
   if (name==='peek') return $('#shead').offsetHeight + 8;
-  const c=cards[0]; const want = $('#shead').offsetHeight + c.querySelector('.hd').offsetHeight + c.querySelector('.photo').offsetHeight + 40 + Math.min(padB,40);
-  return Math.min(want, H);
+  return Math.min(Math.round(vh()*0.6), H);
 }
 let curDetent='half', curVis=0;
-function setVis(v, animate){ curVis=v; sheet.classList.toggle('anim',!!animate); sheet.style.transform=`translateY(${fullH()-v}px)`; }
+function setVis(v, animate){ curVis=v; sheet.classList.toggle('anim',!!animate); sheet.style.transform=`translateY(${fullH()-v}px)`; document.documentElement.style.setProperty('--hiddenB', Math.max(0,fullH()-v)+'px'); }
 let mapTargetH=null;
 function snap(name, animate=true){
   curDetent=name; const v=visibleFor(name); setVis(v, animate);
