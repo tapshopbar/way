@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#E3DED9">
+<meta property="og:type" content="website">
+<meta property="og:title" content="탭샵바 동대문두타점 오시는 길">
+<meta property="og:description" content="동대문역 1·4호선 8번 출구에서 약 200m · 매장 문 앞까지 5~6분 · 사진으로 한 단계씩 안내해 드려요">
+<meta property="og:image" content="https://tapshopbar.github.io/way/og-dongdaemun.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <title>오시는 길 · 탭샵바 동대문두타점 | TAP SHOP BAR</title>
 <style>
 :root{--wine:#4A0B18;--wine2:#6E1426;--cream:#FFFDFC;--ink:#0E0E0E;--grey:#8A8A8F;--line:#ECE7E4;--soft:#F6F2EF;--blue:#156DFF;--red:#F43131;--yellow:#FFC100;--mapH:60dvh}
@@ -52,38 +57,37 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
   .mapwrap{position:fixed;left:0;right:0;top:0;height:var(--mapH);transition:height .45s cubic-bezier(.2,.8,.2,1)}
   .mtop{position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top));display:flex;gap:8px;align-items:center;z-index:5}
   .pill{background:#fff;border-radius:999px;box-shadow:0 4px 18px rgba(0,0,0,.14);height:44px;display:flex;align-items:center;gap:9px;padding:0 16px;font-size:14px;font-weight:700}
-  .pill small{color:var(--grey);font-weight:600}
   .mtop .grow{flex:1;min-width:0}.mtop .grow span.t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sharebtn{background:#fff;border-radius:999px;box-shadow:0 4px 18px rgba(0,0,0,.14);height:44px;padding:0 14px;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:800;color:var(--wine)}
+  .sharebtn svg{width:18px;height:18px}
   .eta{position:fixed;right:12px;top:calc(62px + env(safe-area-inset-top));z-index:5;background:var(--ink);color:#fff;border-radius:12px;padding:8px 12px;font-size:13px;font-weight:800;box-shadow:0 4px 14px rgba(0,0,0,.18)}
   .eta small{font-weight:600;opacity:.7;margin-left:4px}
-  .sheet{position:fixed;left:0;right:0;bottom:0;height:calc(100dvh - 64px);background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.16);z-index:10;transform:translateY(100%);will-change:transform;display:flex;flex-direction:column;touch-action:none}
+  .sheet{position:fixed;left:0;right:0;bottom:0;height:calc(100dvh - 190px);background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.16);z-index:10;transform:translateY(100%);will-change:transform;display:flex;flex-direction:column}
   .sheet.anim{transition:transform .55s cubic-bezier(.22,1.18,.36,1)}
-  .shead{padding:8px 18px 4px;cursor:grab;flex:none;user-select:none;-webkit-user-select:none}
   .sheet,.mtop,.eta{user-select:none;-webkit-user-select:none}
-  .grab{width:40px;height:5px;border-radius:5px;background:#D9D4D0;margin:0 auto 12px}
+  .shead{padding:8px 18px 10px;flex:none;border-bottom:1px solid var(--line);touch-action:none;cursor:grab}
+  .grab{width:40px;height:5px;border-radius:5px;background:#D9D4D0;margin:0 auto 10px}
   .shead .row{display:flex;justify-content:space-between;align-items:baseline}
   .stepno{font-size:12px;font-weight:800;color:var(--wine);letter-spacing:.08em}
   .shead .route{font-size:12px;color:var(--grey);font-weight:600}
-  .progress{display:flex;gap:4px;margin-top:10px}.progress i{flex:1;height:4px;border-radius:4px;background:#eee;transition:background .3s}.progress i.on{background:var(--ink)}
-  .sbody{flex:1;overflow-y:auto;overscroll-behavior:contain;padding-bottom:calc(24px + env(safe-area-inset-bottom));touch-action:pan-y}
-  .track{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 18px 2px;scrollbar-width:none;touch-action:pan-x pan-y}
-  .track::-webkit-scrollbar{display:none}
-  .scard{flex:0 0 86%;scroll-snap-align:center;scroll-snap-stop:always}
-  .scard:only-child{flex-basis:100%}
-  .scard h2{font-size:20px;line-height:1.3;letter-spacing:-.02em;margin:12px 0 4px}
-  .scard p{font-size:14.5px;line-height:1.55;color:#55504c;margin-bottom:10px}
-  .nav{display:flex;gap:10px;padding:12px 18px 0}
-  .btn{flex:1;height:52px;border-radius:14px;font-weight:800;font-size:16px;display:grid;place-items:center}
-  .btn.ghost{flex:0 0 92px;background:var(--soft)}.btn.main{background:var(--ink);color:#fff}.btn.wine{background:var(--wine);color:#fff}.btn:disabled{opacity:.35}
-  .more{padding:22px 18px 0}
-  .more h3{font-size:12px;letter-spacing:.18em;color:var(--wine);font-weight:800;margin-bottom:10px}
-  .all{list-style:none;margin-bottom:18px}
-  .all li{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
-  .all li .n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-size:12px;font-weight:800}
-  .all li.on .n{background:var(--wine);color:#fff}
-  .all li .tt{flex:1;font-size:14px;font-weight:700;line-height:1.35}.all li .tt small{display:block;font-weight:500;color:var(--grey);font-size:12px}
+  .progress{display:flex;gap:4px;margin-top:9px}.progress i{flex:1;height:4px;border-radius:4px;background:#eee;transition:background .3s}.progress i.on{background:var(--ink)}
+  .nav{display:flex;gap:8px;margin-top:10px}
+  .btn{height:48px;border-radius:14px;font-weight:800;font-size:16px;display:grid;place-items:center}
+  .btn.ghost{flex:0 0 76px;background:var(--soft)}.btn.main{flex:1;background:var(--ink);color:#fff}.btn.wine{flex:1;background:var(--wine);color:#fff}.btn:disabled{opacity:.35}
+  .sbody{flex:1;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scroll-snap-type:y proximity;padding-bottom:var(--padB)}
+  .scard{padding:16px 18px 18px;border-bottom:8px solid var(--soft);scroll-snap-align:start;scroll-margin-top:0;transition:background .3s}
+  .scard .hd{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+  .scard .num{flex:none;width:30px;height:30px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-size:13px;font-weight:800;transition:all .3s}
+  .scard.on .num{background:var(--wine);color:#fff}
+  .scard h2{font-size:19px;line-height:1.3;letter-spacing:-.02em}
+  .scard p{font-size:15px;line-height:1.55;color:#55504c;margin:10px 0}
+  .scard:not(.on){opacity:.55}
+  .more{padding:20px 18px 0}
   .more .links{margin-bottom:14px}.more .addr{margin-bottom:12px}
-  .hint{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:11;font-size:11px;color:var(--grey);pointer-events:none;opacity:0}
+  .bigshare{width:100%;height:52px;border-radius:14px;background:var(--wine);color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px}
+  .bigshare svg{width:20px;height:20px;flex:none}
+  .toast{position:fixed;left:50%;top:calc(120px + env(safe-area-inset-top));transform:translate(-50%,-10px);background:rgba(14,14,14,.9);color:#fff;font-size:14px;font-weight:700;padding:12px 16px;border-radius:12px;z-index:30;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
 }
 /* ================= DESKTOP ================= */
 @media (min-width:960px){
@@ -151,20 +155,21 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
 <!-- mobile overlay -->
 <div class="mtop">
   <div class="pill grow"><div class="dots"><i></i><i></i><i></i></div><span class="t">탭샵바 동대문두타점</span></div>
+  <button class="sharebtn" id="share1" aria-label="오시는 길 공유"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>공유</button>
 </div>
 <div class="eta">🚶 5분<small>200m</small></div>
+<div class="toast" id="toast"></div>
 <div class="sheet" id="sheet">
   <div class="shead" id="shead">
     <div class="grab"></div>
     <div class="row"><span class="stepno" id="stepno"></span><span class="route" id="routeTxt"></span></div>
     <div class="progress" id="prog"></div>
+    <div class="nav"><button class="btn ghost" id="prev">이전</button><button class="btn main" id="next">다음</button></div>
   </div>
   <div class="sbody" id="sbody">
-    <div class="track" id="track"></div>
-    <div class="nav"><button class="btn ghost" id="prev">이전</button><button class="btn main" id="next">다음</button></div>
+    <div id="steps"></div>
     <div class="more">
-      <h3>전체 경로</h3>
-      <ul class="all" id="all"></ul>
+      <button class="bigshare" id="share2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>이 길 안내 공유하기</button>
       <div class="links"><a href="https://m.place.naver.com/restaurant/1784099751/home" target="_blank" rel="noopener">네이버지도</a><a href="https://place.map.kakao.com/623463532" target="_blank" rel="noopener">카카오맵</a><a href="https://m.booking.naver.com/booking/6/bizes/1125285" target="_blank" rel="noopener">예약</a></div>
       <div class="addr"><b>탭샵바 동대문두타점</b><br>서울 중구 장충단로 275, 두타몰 지하 2층 117호<br>푸드코트 방향 · 지하주차장 2시간 무료</div>
       <p class="draft">길 사진: 카카오맵 로드뷰(2026.07). 두타몰 안 사진은 곧 추가돼요.</p>
@@ -178,6 +183,7 @@ const P = {"E": [206, 22], "A": [210, 58], "B": [214, 124], "C": [222, 180], "D"
 const FULL = [180, 140, 320];
 const BOOK = "https://m.booking.naver.com/booking/6/bizes/1125285";
 const SUB = "동대문역 1·4호선 8번 출구에서 약 200m · 매장 문 앞까지 5~6분";
+const BRANCH = "동대문두타점";
 const STEPS = [
   {img:'d1', tag:'동대문역 8번 출구', title:'8번 출구로 나와 두타 쪽으로 직진', text:'앞에 보이는 높은 유리 빌딩(두타) 쪽으로 똑바로 걸어가세요.', meta:['50m','약 1분'], seg:['E','A'], ov:''},
   {img:'d2', tag:'청계천 다리', title:'횡단보도 → 다리 → 횡단보도', text:'사거리에서 횡단보도를 건너 청계천 다리를 건넌 뒤, 횡단보도를 한 번 더 건너세요.', meta:['45m','신호 2번'], seg:['A','B'], ov:''},
@@ -203,7 +209,6 @@ function camTo(t,ms=600){ cancelAnimationFrame(anim);
   const tick=now=>{ const k=Math.min(1,(now-t0)/ms), e=1-Math.pow(1-k,3); vb=f.map((v,j)=>v+(t[j]-v)*e); $('#map').setAttribute('viewBox',vb.join(' ')); if(k<1) anim=requestAnimationFrame(tick); };
   anim=requestAnimationFrame(tick); }
 function frameAll(){ const r=$('.mapwrap').getBoundingClientRect(), ar=r.width/Math.max(1,r.height); const h=FULL[2], w=Math.max(h*.8,h*ar); return [FULL[0]-w/2,FULL[1]-h/2,w,h*Math.max(1,(w/ar)/h)]; }
-let mapTargetH=null;
 function frame(i){
   if (isPC()) return frameAll();
   const r=$('.mapwrap').getBoundingClientRect(), ar=r.width/Math.max(1,(mapTargetH||r.height));
@@ -229,66 +234,77 @@ function photoHTML(s){
     <span class="tag">${s.tag}</span>${IMG[s.img]?`<span class="credit">${credit}</span>`:''}</div>`; }
 const metaHTML = s=>`<div class="meta">${s.meta.map(m=>`<span>${m}</span>`).join('')}</div>`;
 
-/* ---------- mobile: Uber-style sheet ---------- */
-const sheet=$('#sheet'), track=$('#track');
+/* ---------- mobile: Uber-style sheet (vertical steps) ---------- */
+const sheet=$('#sheet'), sbody=$('#sbody');
+const UA=navigator.userAgent, iOS=/iPhone|iPad|iPod/.test(UA), inApp=/KAKAOTALK|NAVER|Instagram|FBAN|FBAV|Line\//i.test(UA);
+const padB = (iOS ? (inApp?110:80) : (inApp?60:28));
+document.documentElement.style.setProperty('--padB', `calc(${padB}px + env(safe-area-inset-bottom))`);
 $('#routeTxt').textContent = SUB.split('에서')[0];
 $('#prog').innerHTML = STEPS.map(()=>'<i></i>').join('');
-track.innerHTML = STEPS.map((s,i)=>`<div class="scard" data-i="${i}">${photoHTML(s)}<h2>${s.title}</h2><p>${s.text}</p>${metaHTML(s)}</div>`).join('');
-$('#all').innerHTML = STEPS.map((s,i)=>`<li data-i="${i}"><span class="n">${s.arrive?'✓':i+1}</span><span class="tt">${s.title}<small>${s.meta.join(' · ')}</small></span></li>`).join('');
-document.querySelectorAll('#all li').forEach(li=>li.onclick=()=>{ goTo(+li.dataset.i); snap('half'); });
-
-function setStep(i, fromScroll){
+$('#steps').innerHTML = STEPS.map((s,i)=>`<div class="scard" data-i="${i}"><div class="hd"><span class="num">${s.arrive?'✓':i+1}</span><h2>${s.title}</h2></div>${photoHTML(s)}<p>${s.text}</p>${metaHTML(s)}</div>`).join('');
+const cards=[...document.querySelectorAll('.scard')];
+function setStep(i){
+  if (i===cur && cards[i].classList.contains('on')) return;
   cur=i;
   $('#stepno').textContent = `STEP ${i+1} / ${STEPS.length}`;
   document.querySelectorAll('#prog i').forEach((el,k)=>el.classList.toggle('on',k<=i));
-  document.querySelectorAll('#all li').forEach((el,k)=>el.classList.toggle('on',k===i));
+  cards.forEach((el,k)=>el.classList.toggle('on',k===i));
   $('#prev').disabled = i===0;
   const s=STEPS[i], nx=$('#next');
   if (s.arrive){ nx.textContent='예약하기'; nx.className='btn wine'; }
-  else { nx.textContent = i===STEPS.length-2 ? '도착' : '다음'; nx.className='btn main'; }
+  else { nx.textContent = i===STEPS.length-2 ? '도착 ↓' : '다음 ↓'; nx.className='btn main'; }
   setMap(i);
 }
-function goTo(i){ i=Math.max(0,Math.min(STEPS.length-1,i)); const c=track.children[i]; track.scrollTo({left:c.offsetLeft-(track.clientWidth-c.clientWidth)/2, behavior:'smooth'}); setStep(i); }
+let lock=0;
+function goTo(i){ i=Math.max(0,Math.min(STEPS.length-1,i)); lock=Date.now(); setStep(i); sbody.scrollTo({top:cards[i].offsetTop, behavior:'smooth'}); }
 $('#prev').onclick=()=>goTo(cur-1);
 $('#next').onclick=()=>{ if (STEPS[cur].arrive) open(BOOK,'_blank'); else goTo(cur+1); };
-let st; track.addEventListener('scroll',()=>{ clearTimeout(st); st=setTimeout(()=>{
-  const mid=track.scrollLeft+track.clientWidth/2; let best=0,bd=1e9;
-  [...track.children].forEach((c,k)=>{ const d=Math.abs(c.offsetLeft+c.clientWidth/2-mid); if(d<bd){bd=d;best=k;} });
-  if (best!==cur) setStep(best,true); },90); },{passive:true});
+/* active step = card nearest the top of the sheet body */
+sbody.addEventListener('scroll',()=>{ if (Date.now()-lock<700) return;
+  const y=sbody.scrollTop+40; let best=0; cards.forEach((c,k)=>{ if (c.offsetTop<=y) best=k; });
+  if (sbody.scrollTop+sbody.clientHeight>=sbody.scrollHeight-4 && best<STEPS.length-1 && cards[STEPS.length-1].offsetTop < sbody.scrollTop+sbody.clientHeight*0.5) best=STEPS.length-1;
+  if (best!==cur) setStep(best);
+  if (curDetent==='half' && sbody.scrollTop>24) snap('full');
+},{passive:true});
+/* share */
+const shareData=()=>({title:`탭샵바 ${BRANCH} 오시는 길`, text:`탭샵바 ${BRANCH} 오시는 길 (${SUB})`, url:location.href.split('#')[0]});
+function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2200); }
+async function share(){ const d=shareData();
+  if (navigator.share){ try{ await navigator.share(d); return; }catch(e){ if(e && e.name==='AbortError') return; } }
+  const txt=`${d.text}\n${d.url}`;
+  try{ await navigator.clipboard.writeText(txt); }catch(e){ const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+  toast('링크를 복사했어요. 카톡에 붙여넣기 하세요'); }
+['#share1','#share2'].forEach(id=>$(id).onclick=share);
 
 /* detents */
 const vh=()=>window.innerHeight, fullH=()=>sheet.getBoundingClientRect().height;
 function visibleFor(name){
   const H=fullH();
   if (name==='full') return H;
-  if (name==='peek') return 150;
-  const want = $('#shead').offsetHeight + track.offsetHeight + $('.nav').offsetHeight + 26;
-  return Math.min(want, H*0.78, vh()-150);
+  if (name==='peek') return $('#shead').offsetHeight + 8;
+  const c=cards[0]; const want = $('#shead').offsetHeight + c.querySelector('.hd').offsetHeight + c.querySelector('.photo').offsetHeight + 40 + Math.min(padB,40);
+  return Math.min(want, H);
 }
 let curDetent='half', curVis=0;
 function setVis(v, animate){ curVis=v; sheet.classList.toggle('anim',!!animate); sheet.style.transform=`translateY(${fullH()-v}px)`; }
+let mapTargetH=null;
 function snap(name, animate=true){
   curDetent=name; const v=visibleFor(name); setVis(v, animate);
-  const mapH = Math.max(160, vh()-Math.min(v, vh()*0.78)+22);
+  const mapH = Math.max(170, vh()-v+22);
   mapTargetH=mapH; document.documentElement.style.setProperty('--mapH', mapH+'px');
-  if (name!=='full') $('#sbody').scrollTop=0;
   camTo(frame(cur), 650);
 }
-/* drag */
+/* drag the header */
 let drag=null;
-$('#shead').addEventListener('pointerdown',e=>{ drag={y0:e.clientY, v0:curVis, t0:performance.now(), y:e.clientY}; $('#shead').setPointerCapture(e.pointerId); sheet.classList.remove('anim'); });
-$('#shead').addEventListener('pointermove',e=>{ if(!drag) return; drag.y=e.clientY; const v=Math.max(90, Math.min(fullH(), drag.v0-(e.clientY-drag.y0))); setVis(v,false); });
-$('#shead').addEventListener('pointerup',e=>{ if(!drag) return; const dy=e.clientY-drag.y0, dt=performance.now()-drag.t0, vel=dy/dt;
-  const opts=['peek','half','full'].map(n=>[n,visibleFor(n)]);
-  let target;
-  if (Math.abs(dy)<6){ target = curDetent==='half' ? 'full' : 'half'; }
+$('#shead').addEventListener('pointerdown',e=>{ if (e.target.closest('button')) return; drag={y0:e.clientY, v0:curVis, t0:performance.now()}; $('#shead').setPointerCapture(e.pointerId); sheet.classList.remove('anim'); });
+$('#shead').addEventListener('pointermove',e=>{ if(!drag) return; const v=Math.max(80, Math.min(fullH(), drag.v0-(e.clientY-drag.y0))); setVis(v,false); });
+$('#shead').addEventListener('pointerup',e=>{ if(!drag) return; const dy=e.clientY-drag.y0, vel=dy/(performance.now()-drag.t0);
+  const opts=['peek','half','full'].map(n=>[n,visibleFor(n)]); let target;
+  if (Math.abs(dy)<6) target = curDetent==='full' ? 'half' : (curDetent==='half'?'full':'half');
   else if (vel<-0.5) target = curDetent==='peek' ? 'half' : 'full';
   else if (vel>0.5) target = curDetent==='full' ? 'half' : 'peek';
   else target = opts.reduce((a,b)=>Math.abs(b[1]-curVis)<Math.abs(a[1]-curVis)?b:a)[0];
-  drag=null; snap(target); });
-/* body scroll at top + pull down => collapse */
-let by=null; $('#sbody').addEventListener('touchstart',e=>{ by=$('#sbody').scrollTop<=0?e.touches[0].clientY:null; },{passive:true});
-$('#sbody').addEventListener('touchend',e=>{ if(by!==null && e.changedTouches[0].clientY-by>70 && curDetent==='full') snap('half'); by=null; },{passive:true});
+  drag=null; if (target!=='full') sbody.scrollTo({top:cards[cur].offsetTop}); snap(target); });
 
 /* ---------- desktop list ---------- */
 const list=$('#list');
