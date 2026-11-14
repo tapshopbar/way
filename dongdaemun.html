@@ -165,10 +165,18 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
 .pv .note{color:rgba(255,255,255,.6);font-size:12px;text-align:center}
 .shm{position:fixed;inset:0;z-index:60;background:rgba(14,14,14,.5);display:none;align-items:flex-end;justify-content:center}
 .shm.open{display:flex}
-.shm .box{width:min(520px,100%);background:#fff;border-radius:22px 22px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom));display:grid;gap:10px}
-.shm h3{font-size:16px;font-weight:800;margin:2px 4px 6px}
-.shm a,.shm button{display:flex;align-items:center;justify-content:center;height:52px;border-radius:14px;font-size:15.5px;font-weight:800;border:0;font-family:inherit;cursor:pointer;text-decoration:none}
-.shm .s1{background:var(--pine);color:#fff}.shm .s2{background:var(--soft);color:var(--ink)}.shm .s3{background:#fff;color:var(--grey)}
+.shm .box{width:min(520px,100%);background:#fff;border-radius:22px 22px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+.shm .grab{width:40px;height:5px;border-radius:3px;background:#ddd;margin:0 auto 12px}
+.shm h3{font-size:16px;font-weight:800;margin:0 4px 2px}
+.shm .sub{font-size:12.5px;color:var(--grey);margin:0 4px 14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shm .ics{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.shm .ic{display:flex;flex-direction:column;align-items:center;gap:7px;background:none;border:0;font-family:inherit;cursor:pointer;text-decoration:none;color:var(--ink);font-size:12.5px;font-weight:700;padding:4px 0}
+.shm .ic i{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center}
+.shm .ic svg{width:28px;height:28px}
+.shm .k i{background:#FEE500}.shm .m i{background:#34C759}.shm .o i{background:#156DFF}.shm .c i{background:#EEEAE7}
+.shm .ext{display:none;align-items:center;justify-content:center;gap:8px;width:100%;height:50px;border-radius:14px;background:var(--pine);color:#fff;font-size:15px;font-weight:800;text-decoration:none;margin-bottom:8px}
+.shm .ext.on{display:flex}
+.shm .cl{width:100%;height:48px;border-radius:14px;border:0;background:var(--soft);color:var(--ink);font-family:inherit;font-size:15px;font-weight:800;cursor:pointer}
 @media (max-width:959px), (min-width:960px) and (max-width:1199px) and (pointer:coarse){
   .pvbtn{position:fixed;left:12px;bottom:auto;top:calc(62px + env(safe-area-inset-top));z-index:5}
 }
@@ -294,14 +302,14 @@ function frameAll(){ const r=$('.mapwrap').getBoundingClientRect(), ar=r.width/M
 function frame(i){
   if (isPC()) return frameAll();
   const r=$('.mapwrap').getBoundingClientRect(), mh=Math.max(1,(isSplit()? r.height : (mapTargetH||r.height)));
-  const topUI=Math.min(0.45, 112/mh), ar=r.width/(mh*(1-topUI));
+  const topUI=Math.min(0.45, 112/mh), botUI=isSplit()?Math.min(.26,190/mh):Math.min(.22,96/mh), ar=r.width/(mh*(1-topUI-botUI));
   const pts=[]; STEPS.slice(i).forEach(s=>{ if(s.seg) s.seg.forEach(k=>pts.push(P[k])); }); pts.push(P.S);
   if (!STEPS[i].seg){ const last=[...STEPS].reverse().find(x=>x.seg).seg; pts.push(P[last[0]]); }
   const xs=pts.map(p=>p[0]), ys=pts.map(p=>p[1]);
   let w=Math.max(220, Math.max(...xs)-Math.min(...xs)+120), h=Math.max(200, Math.max(...ys)-Math.min(...ys)+190);
   if (w/h<ar) w=h*ar; else h=w/ar;
   const cx=(Math.max(...xs)+Math.min(...xs))/2, cy=(Math.max(...ys)+Math.min(...ys))/2+18;
-  const botUI=isSplit()?Math.min(.24,170/mh):0; const H=h/(1-topUI-botUI), top=cy-h/2-H*topUI;
+  const H=h/(1-topUI-botUI), top=cy-h/2-H*topUI;
   return [cx-w/2, top, w, H]; }
 function setMap(i){
   camTo(frame(i));
@@ -351,7 +359,7 @@ const shareData=()=>({title:`탭샵바 ${BRANCH} 오시는 길`, text:`탭샵바
 function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2200); }
 async function share(){ const d=shareData();
   if (navigator.share){ try{ await navigator.share(d); return; }catch(e){ if(e && e.name==='AbortError') return; } }
-  if (/android/i.test(navigator.userAgent) && window.openShareMenu){ openShareMenu(d); return; }
+  if (window.openShareMenu){ openShareMenu(d); return; }
   const txt=`${d.text}\n${d.url}`;
   try{ await navigator.clipboard.writeText(txt); }catch(e){ const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
   toast('링크를 복사했어요. 카톡에 붙여넣기 하세요'); }
@@ -419,11 +427,15 @@ let rz; addEventListener('resize',()=>{ clearTimeout(rz); rz=setTimeout(()=>{ if
   <div class="note">동대문역 8번 출구 → 두타몰 입구 · 약 5분 · 200m</div>
 </div>
 <div class="shm" id="shm" role="dialog" aria-label="공유">
-  <div class="box"><h3>이 길 안내 보내기</h3>
-    <a class="s1" id="shm1" href="#">카톡·문자 등 다른 앱으로 공유</a>
-    <a class="s2" id="shm2" href="#">문자로 보내기</a>
-    <button class="s2" id="shm3">링크 복사</button>
-    <button class="s3" id="shm4">닫기</button></div>
+  <div class="box"><div class="grab"></div><h3>이 길 안내 보내기</h3><div class="sub" id="shmsub"></div>
+    <div class="ics">
+      <button class="ic k" id="shk"><i><svg viewBox="0 0 24 24"><path fill="#3A1D1D" d="M12 3.5C6.8 3.5 2.6 6.8 2.6 10.9c0 2.6 1.7 4.9 4.3 6.2l-1.1 4 4.6-3c.5.1 1.1.1 1.6.1 5.2 0 9.4-3.3 9.4-7.3S17.2 3.5 12 3.5z"/></svg></i>카카오톡</button>
+      <a class="ic m" id="shm2" href="#"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg></i>문자</a>
+      <a class="ic o" id="shm1" href="#"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 10.8l7.6-3.6M8.2 13.2l7.6 3.6"/></svg></i>다른 앱</a>
+      <button class="ic c" id="shm3"><i><svg viewBox="0 0 24 24" fill="none" stroke="#0E0E0E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></i>링크 복사</button>
+    </div>
+    <a class="ext" id="shext" href="#">Chrome에서 열고 공유하기</a>
+    <button class="cl" id="shm4">닫기</button></div>
 </div>
 <script>
 (function(){
@@ -437,18 +449,32 @@ let rz; addEventListener('resize',()=>{ clearTimeout(rz); rz=setTimeout(()=>{ if
   document.getElementById('pvagain').addEventListener('click',function(){v.currentTime=0;v.play();});
   pv.addEventListener('click',function(e){if(e.target===pv)close();});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){close();document.getElementById('shm').classList.remove('open');}});
-  var shm=document.getElementById('shm');
+  var shm=document.getElementById('shm'), UA=navigator.userAgent, AND=/android/i.test(UA), INAPP=/KAKAOTALK|NAVER|Instagram|FBAN|FBAV|Line\/|DaumApps|; wv\)/i.test(UA);
+  function copy(t){ if(navigator.clipboard&&window.isSecureContext) return navigator.clipboard.writeText(t).catch(function(){fb(t)}); fb(t); return Promise.resolve(); }
+  function fb(t){ var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){};ta.remove(); }
+  function msg(m){ if(window.toast) toast(m); }
+  function hide(){ shm.classList.remove('open'); }
   window.openShareMenu=function(d){
-    var txt=d.text+'\n'+d.url;
-    document.getElementById('shm1').href='intent:#Intent;action=android.intent.action.SEND;type=text/plain;S.android.intent.extra.TEXT='+encodeURIComponent(txt)+';S.android.intent.extra.SUBJECT='+encodeURIComponent(d.title)+';end';
-    document.getElementById('shm2').href='sms:?body='+encodeURIComponent(txt);
-    document.getElementById('shm3').onclick=async function(){try{await navigator.clipboard.writeText(txt);}catch(e){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();} shm.classList.remove('open'); if(window.toast) toast('링크를 복사했어요. 카톡에 붙여넣기 하세요');};
+    var txt=d.text+'\n'+d.url, u=d.url;
+    document.getElementById('shmsub').textContent=d.url;
+    document.getElementById('shm2').href=(/iPhone|iPad/.test(UA)?'sms:&body=':'sms:?body=')+encodeURIComponent(txt);
+    var o=document.getElementById('shm1');
+    if(AND){ o.style.display=''; o.href='intent:#Intent;action=android.intent.action.SEND;type=text/plain;S.android.intent.extra.TEXT='+encodeURIComponent(txt)+';S.android.intent.extra.SUBJECT='+encodeURIComponent(d.title)+';end'; } else o.style.display='none';
+    document.querySelector('.shm .ics').style.gridTemplateColumns=AND?'repeat(4,1fr)':'repeat(3,1fr)';
+    document.getElementById('shk').onclick=function(){ copy(txt).then(function(){ hide();
+      if(/KAKAOTALK/i.test(UA)){ msg('복사했어요. 보낼 채팅방에 붙여넣기 하세요'); return; }
+      msg('복사했어요. 카톡 채팅방에 붙여넣기 하세요');
+      setTimeout(function(){ location.href=AND?'intent://launch#Intent;scheme=kakaotalk;package=com.kakao.talk;end':'kakaotalk://launch'; },350); }); };
+    document.getElementById('shm3').onclick=function(){ copy(txt).then(function(){ hide(); msg('링크를 복사했어요. 원하는 곳에 붙여넣기 하세요'); }); };
+    var ex=document.getElementById('shext');
+    if(INAPP){ ex.classList.add('on'); ex.textContent=AND?'Chrome에서 열고 공유하기':'Safari에서 열고 공유하기';
+      ex.href=/KAKAOTALK/i.test(UA)?'kakaotalk://web/openExternal?url='+encodeURIComponent(u):(AND?'intent://'+u.replace(/^https?:\/\//,'')+'#Intent;scheme=https;package=com.android.chrome;end':u); }
+    else ex.classList.remove('on');
     shm.classList.add('open');
   };
-  document.getElementById('shm4').onclick=function(){shm.classList.remove('open');};
-  shm.addEventListener('click',function(e){if(e.target===shm)shm.classList.remove('open');});
-  document.getElementById('shm1').addEventListener('click',function(){setTimeout(function(){shm.classList.remove('open');},400);});
-  document.getElementById('shm2').addEventListener('click',function(){setTimeout(function(){shm.classList.remove('open');},400);});
+  document.getElementById('shm4').onclick=hide;
+  shm.addEventListener('click',function(e){if(e.target===shm)hide();});
+  ['shm1','shm2','shext'].forEach(function(id){document.getElementById(id).addEventListener('click',function(){setTimeout(hide,400);});});
 })();
 </script>
 </body>
