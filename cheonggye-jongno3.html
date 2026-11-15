@@ -187,11 +187,23 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
   .pv .x{position:absolute;right:12px;top:12px}
 }
 </style>
+<style>
+/* 1115 홈·뒤로 버튼 + tsb.wine 톤 맞춤 */
+.tsb-back{flex:none;width:44px;height:44px;border-radius:50%;background:#fff;box-shadow:0 4px 18px rgba(0,0,0,.14);display:grid;place-items:center;color:var(--ink,#0E0E0E);text-decoration:none}
+.tsb-back svg{width:22px;height:22px}
+.tsb-tl{display:flex;align-items:center;gap:12px}
+.tsb-tl .tsb-dback{width:32px;height:32px;margin-left:-6px;border-radius:50%;display:grid;place-items:center;color:var(--ink,#0E0E0E)}
+.tsb-tl .tsb-dback:hover{background:#F1F1EF}.tsb-tl .tsb-dback svg{width:20px;height:20px}
+.tsb-tl img{height:16px;width:auto;display:block}
+.tsb-tl .dots{display:flex;gap:4px}.tsb-tl .dots i{width:7px;height:7px}
+.tsb-nav{display:flex;gap:22px;flex-wrap:wrap;margin:18px 0 6px}
+.tsb-nav a{font-weight:800;font-size:15px;letter-spacing:-.02em;color:var(--ink,#0E0E0E);text-decoration:none;border-bottom:2px solid currentColor;padding-bottom:2px}
+</style>
 </head>
 <body>
 <div class="page">
   <div class="left"><div class="card">
-    <div class="top"><div class="brand"><div class="dots"><i></i><i></i><i></i></div><span class="label">TAP SHOP BAR</span></div><span class="branch">청계천삼일빌딩점</span></div>
+    <div class="top"><div class="tsb-tl"><a class="tsb-dback" href="/way/" aria-label="다른 지점 보기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a><a href="https://tsb.wine/" aria-label="TAP SHOP BAR 홈"><img src="https://tsb.wine/assets/tsb_wordmark_h.png" alt="TAP SHOP BAR"></a><div class="dots"><i></i><i></i><i></i></div></div><span class="branch">청계천삼일빌딩점</span></div>
     <div class="title"><h1>역에서 매장까지, 사진으로 따라오세요</h1><p>종로3가역(1·3·5호선) 15번 출구에서 걸어서 약 10분 · 620m</p></div>
     <div class="routes"><a class="chip" href="cheonggye"><span class="ln ln1">1</span>종각역 4번</a>
       <a class="chip" href="cheonggye-euljiro3"><span class="ln ln2">2</span><span class="ln ln3" style="margin-left:-4px">3</span>을지로3가역 1번</a>
@@ -219,13 +231,14 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
         <circle id="pulse" class="pulse" cx="0" cy="0" r="12"/><circle id="me" class="me" cx="0" cy="0" r="7"/>
       </svg>
     </div>
-    <div class="lefttail"><div class="links"><a class="naver" href="https://map.naver.com/p/search/%ED%83%AD%EC%83%B5%EB%B0%94%20%EC%B2%AD%EA%B3%84%EC%B2%9C%EC%82%BC%EC%9D%BC%EB%B9%8C%EB%94%A9%EC%A0%90" target="_blank" rel="noopener">네이버지도</a><a class="kakao" href="https://place.map.kakao.com/745143994" target="_blank" rel="noopener">카카오맵</a><a class="book" href="https://m.booking.naver.com/booking/6/bizes/1180715" target="_blank" rel="noopener">예약하기</a></div><div class="addr"><b>탭샵바 청계천삼일빌딩점</b><br>서울 종로구 청계천로 85, 삼일빌딩 지하 1층<br>건물 밖 계단으로 바로 내려오세요</div><p class="draft">길 사진: 카카오맵 로드뷰(2026.06). 매장 사진: 탭샵바(장군 작가).</p></div>
+    <div class="lefttail"><div class="links"><a class="naver" href="https://map.naver.com/p/search/%ED%83%AD%EC%83%B5%EB%B0%94%20%EC%B2%AD%EA%B3%84%EC%B2%9C%EC%82%BC%EC%9D%BC%EB%B9%8C%EB%94%A9%EC%A0%90" target="_blank" rel="noopener">네이버지도</a><a class="kakao" href="https://place.map.kakao.com/745143994" target="_blank" rel="noopener">카카오맵</a><a class="book" href="https://m.booking.naver.com/booking/6/bizes/1180715" target="_blank" rel="noopener">예약하기</a></div><div class="addr"><b>탭샵바 청계천삼일빌딩점</b><br>서울 종로구 청계천로 85, 삼일빌딩 지하 1층<br>건물 밖 계단으로 바로 내려오세요</div><div class="tsb-nav"><a href="/way/">다른 지점 오시는 길</a><a href="https://tsb.wine/">탭샵바 홈</a></div>
+<p class="draft">길 사진: 카카오맵 로드뷰(2026.06). 매장 사진: 탭샵바(장군 작가).</p></div>
   </div></div>
   <div class="list" id="list"><h2 class="h">STEP BY STEP</h2></div>
 </div>
 
 <!-- mobile overlay -->
-<div class="mtop">
+<div class="mtop"><a class="tsb-back" href="/way/" aria-label="다른 지점 보기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
   <div class="pill grow"><div class="dots"><i></i><i></i><i></i></div><span class="t">탭샵바 청계천삼일빌딩점</span></div>
   <button class="sharebtn" id="share1" aria-label="오시는 길 공유"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>공유</button>
 </div>
@@ -246,7 +259,8 @@ a{color:inherit;text-decoration:none}button{font:inherit;border:0;background:non
     <div class="more">
       <div class="links"><a class="naver" href="https://map.naver.com/p/search/%ED%83%AD%EC%83%B5%EB%B0%94%20%EC%B2%AD%EA%B3%84%EC%B2%9C%EC%82%BC%EC%9D%BC%EB%B9%8C%EB%94%A9%EC%A0%90" target="_blank" rel="noopener">네이버지도</a><a class="kakao" href="https://place.map.kakao.com/745143994" target="_blank" rel="noopener">카카오맵</a><a class="book" href="https://m.booking.naver.com/booking/6/bizes/1180715" target="_blank" rel="noopener">예약하기</a></div>
       <div class="addr"><b>탭샵바 청계천삼일빌딩점</b><br>서울 종로구 청계천로 85, 삼일빌딩 지하 1층<br>건물 밖 계단으로 바로 내려오세요</div>
-      <p class="draft">길 사진: 카카오맵 로드뷰(2026.06). 매장 사진: 탭샵바(장군 작가).</p>
+      <div class="tsb-nav"><a href="/way/">다른 지점 오시는 길</a><a href="https://tsb.wine/">탭샵바 홈</a></div>
+<p class="draft">길 사진: 카카오맵 로드뷰(2026.06). 매장 사진: 탭샵바(장군 작가).</p>
     </div>
   </div>
 </div>
